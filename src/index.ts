@@ -12,58 +12,66 @@ function is_MathByX_Available() {
 function is_MathByY_Available() {
   return false;
 }
+function is_SciByX_Available() {
+  return false;
+}
+function is_SciByY_Available() {
+  return false;
+}
 
-// function resultMathsBooks(): Promise<string> {
-//   return new Promise((resolve, reject) => {
-//     if (is_MathByX_Available()) {
-//       resolve("is_MathByX_Available");
-//     } else if (is_MathByY_Available()) {
-//       resolve("is_MathByY_Available");
-//     } else {
-//       reject("both books are not available");
-//     }
-//   });
-// }
-// function resultScienceBook(): Promise<string> {
-//   return new Promise((resolve, reject) => {
-//     if (is_MathByX_Available()) {
-//       resolve("is_MathByX_Available");
-//     } else if (is_MathByY_Available()) {
-//       resolve("is_MathByY_Available");
-//     } else {
-//       reject("both books are not available");
-//     }
-//   });
-// }
-function result(): Promise<string> {
+function resultMathsBooks() {
   return new Promise((resolve, reject) => {
     if (is_MathByX_Available()) {
-      resolve("is_MathByX_Available");
+      resolve(true);
     } else if (is_MathByY_Available()) {
-      resolve("is_MathByY_Available");
+      resolve(true);
     } else {
-      reject("both books are not available");
+      reject(false);
+    }
+  });
+}
+function resultScienceBook(): Promise<string> {
+  return new Promise((resolve, reject) => {
+    if (is_SciByX_Available()) {
+      resolve("is_SciByX_Available");
+    } else if (is_SciByY_Available()) {
+      resolve("is_SciByY_Available");
+    } else {
+      reject("Books are not available");
     }
   });
 }
 
-// result()
-//   .then((result) => console.log(result))
-//   .catch((error) => console.log("error: ", error));
-
-
-  async function final(){
-    try{
-        const result1 = await result();
-        return result1;
+resultMathsBooks().then((result) => {
+    console.log("result");
+    if(result){
+     resultScienceBook().then(data => {
+        console.log(data);
+     }).catch(e=>{
+        console.log(e);
+     })
     }
-    catch(e){
-        // console.log(e);
-        return Promise.reject(e);
+}).catch((error) => {
+    console.log(error);
+})
+
+
+async function final(){
+    try {
+        let result1 = await resultMathsBooks();
+        if(result1){
+            result1 = await resultScienceBook();
+            return result1;
+        }
+    } catch (error) {
+        // console.log(error);
+        return Promise.reject(error);
     }
 }
+
 final().then((data) => {
-    console.log(data);
-}).catch((e) => {
-    console.log(e)
+    console.log("data", data);
+}).catch(e =>{
+    console.log(e);
+    
 })
