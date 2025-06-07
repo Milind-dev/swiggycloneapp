@@ -16,7 +16,7 @@ mongoose.connect(getEnvironmentVariables().db_url)
 .then(()=>{
   console.log("mongo connect");
 })  .catch(err => console.error("MongoDB connection error:", err));
-;
+
 
 // app.use((req,res,next) => {
 //   console.log("middleware");

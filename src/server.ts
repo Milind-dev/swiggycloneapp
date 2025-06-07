@@ -1,0 +1,42 @@
+import * as express from "express";
+import * as mongoose from "mongoose";
+import { getEnvironmentVariables } from "./environments/environment";
+import UserRouter from "./routers/UserRouter";
+
+export class server {
+  public app: express.Application = express();
+
+  constructor() {
+    this.setConfigs();
+    this.setRoutes();
+  }
+
+  setConfigs() {
+    this.connectMongoDB();
+  }
+  connectMongoDB() {
+    mongoose
+      .connect(getEnvironmentVariables().db_url)
+      .then(() => {
+        console.log("mongo connect");
+      })
+      .catch((err) => console.error("MongoDB connection error:", err));
+  }
+
+  setRoutes() {
+    this.userRoutes();
+  }
+  userRoutes() {
+    this.app.use('/app/user/',UserRouter)
+    // this.app.get("/api/user/login", (req, res) => {
+    //   console.log(req);
+    //   const data = { name: "techyks", email: "milinddev101@gmail.com" };
+    //   res.status(200).send(data);
+    // });
+
+    // this.app.get("/api/user/test", (req, res, next) => {
+    //   console.log("test");
+    //   res.send("test");
+    // });
+  }
+}
