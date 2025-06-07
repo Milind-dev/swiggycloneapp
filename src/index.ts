@@ -6,6 +6,10 @@ app.listen(3000, () => {
   console.log("server start at 3000 ");
 });
 
+app.use((req,res,next) => {
+  console.log("middleware");
+  next();
+})
 
 app.get('/api/user/login',(req,res) =>{
   console.log(req)
