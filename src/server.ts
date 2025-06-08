@@ -2,6 +2,7 @@ import * as express from "express";
 import * as mongoose from "mongoose";
 import { getEnvironmentVariables } from "./environments/environment";
 import UserRouter from "./routers/UserRouter";
+import { error } from "console";
 
 export class Server {
   public app: express.Application = express();
@@ -9,6 +10,8 @@ export class Server {
   constructor() {
     this.setConfigs();
     this.setRoutes();
+    this.error04Handler();
+    this.handleError();
   }
 
   setConfigs() {
@@ -25,8 +28,29 @@ export class Server {
 
   setRoutes() {
     this.userRoutes();
-}
-userRoutes() {
-      this.app.use('/app/user',UserRouter)
+  }
+  
+  userRoutes() {
+    this.app.use("/app/user", UserRouter);
+  }
+
+  error04Handler(){
+    this.app.use((req,res) => {
+      res.status(404).json({
+        message:"Not found",
+        status_code:'404'
+      })
+    })
+  }
+  
+  handleError(){
+    this.app.use((error,req,res,next) => {
+      const errorStatus = req.errorStatus || 500;
+      res.status(errorStatus).json({
+        message:error.message || 'Something went wrong please try again', 
+        status_code:errorStatus
+      })
+    })
   }
 }
+ 
