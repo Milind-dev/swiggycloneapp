@@ -1,4 +1,5 @@
 import { Router } from "express";
+import { UserController } from "../UserControllers/UserController";
 
 class UserRouter {
     public router : Router;
@@ -13,20 +14,9 @@ class UserRouter {
         
     }
     getRoutes(){
-            this.router.get("/login", (req, res) => {
-            // console.log(req.query.email);
-            const data = { name: "techyks", email: "milinddev101@gmail.com" };
-            res.status(200).send(data);
-            });
+            this.router.get("/login", UserController.login);
 
-            this.router.get('/test', (req, res, next) => {
-            console.log("test");
-                (req as any).msg = 'This is a test'
-                next(); 
-            },(req,res) => {
-                res.send((req as any).msg);
-
-            });
+            this.router.get('/test', UserController.test1);
     }
     postRoutes(){
     }
