@@ -17,6 +17,8 @@ export class Server {
 
   setConfigs() {
     this.connectMongoDB();
+    this.configBodyParser();
+     
   }
   connectMongoDB() {
     mongoose
@@ -34,7 +36,11 @@ export class Server {
   userRoutes() {
     this.app.use("/app/user", UserRouter);
   }
-
+ configBodyParser(){
+    this.app.use(bodyParser.urlencoded({
+      extended:true
+    }));
+  }
   error04Handler(){
     this.app.use((req,res) => {
       res.status(404).json({
@@ -53,5 +59,6 @@ export class Server {
       })
     })
   }
+ 
 }
  
