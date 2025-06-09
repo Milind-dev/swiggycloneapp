@@ -1,5 +1,6 @@
 import * as express from "express";
 import * as mongoose from "mongoose";
+import * as bodyParser from 'body-parser';
 import { getEnvironmentVariables } from "./environments/environment";
 import UserRouter from "./routers/UserRouter";
 import { error } from "console";
