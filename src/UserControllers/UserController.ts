@@ -1,7 +1,7 @@
 import User from "../models/User";
 
 export class UserController {
-    static login(req, res, next)  {
+    static signup(req, res, next)  {
             // console.log(req.query.email);
             // const data = { name: "techyks", email: "milinddev101@gmail.com" };
             // res.status(200).send(data);
@@ -15,6 +15,19 @@ export class UserController {
 
             const email = req.body.email;
             const password = req.body.password;
+            const name = req.body.name;
+            if(!email){
+                const error  = new Error('email is required');
+                next(error);
+            }
+            else if(!password){
+                const error = new Error('password is required');
+                next(error);
+            }
+            else if(!name){
+                const error = new Error('Name is required');
+                next(error);                
+            }
 
             const user = new User({
                 email,

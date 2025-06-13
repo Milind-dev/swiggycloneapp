@@ -36,6 +36,7 @@ export class Server {
   userRoutes() {
     this.app.use("/app/user", UserRouter);
   }
+  
  configBodyParser(){
     this.app.use(bodyParser.urlencoded({
       extended:true
