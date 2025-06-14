@@ -1,3 +1,4 @@
+import { validationResult } from "express-validator";
 import User from "../models/User";
 
 export class UserController {
@@ -13,35 +14,44 @@ export class UserController {
             // res.send(req.body);
             // res.send(req.query)
 
+            const errors = validationResult(req);
             const email = req.body.email;
             const password = req.body.password;
             const name = req.body.name;
-            if(!email){
-                const error  = new Error('email is required');
-                next(error);
-            }
-            else if(!password){
-                const error = new Error('password is required');
-                next(error);
-            }
-            else if(!name){
-                const error = new Error('Name is required');
-                next(error);                
+            if(!errors.isEmpty()){
+                // return res.status(400).json({errors:errors.array()});
+                return res.status(400).json({errors:errors.array().map(x => x.msg)});
+
             }
 
-            const user = new User({
-                email,
-                password
-            })
+            //after validors use after its comment
+            // if(!email){
+            //     const error  = new Error('email is required');
+            //     next(error);
+            // }
+            // else if(!password){
+            //     const error = new Error('password is required');
+            //     next(error);
+            // }
+            // else if(!name){
+            //     const error = new Error('Name is required');
+            //     next(error);                
+            // }
 
-            user.save().then((user) => {
-                console.log("uesr", user)
-                res.send(user)
-            }).catch(e => {
-                // const error = new Error(e);
-                next(e);
+            // const user = new User({
+            //     email,
+            //     password,
+            //     name
+            // })
 
-            })
+            // user.save().then((user) => {
+            //     console.log("uesr", user)
+            //     res.send(user)
+            // }).catch(e => {
+            //     // const error = new Error(e);
+            //     next(e);
+
+            // })
 
             
 
