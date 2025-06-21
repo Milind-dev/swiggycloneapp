@@ -4,7 +4,7 @@ import { validationResult } from 'express-validator';
 
 export class UserController {
 
-    static signup(req, res, next) {
+    static async signup(req, res, next) {
 
         const errors = validationResult(req);
         const name = req.body.name;
@@ -23,14 +23,19 @@ export class UserController {
             email,password,
             name,type,status,phone
         }
-        const user = new User(data);
+        try {
+            const user = await new User(data);
+            res.send(user)
+        } catch (error) {
+                next(error);
+        }
 
-        user.save().then((user) => {
-            res.send(user);
-        })
-        .catch(e => {
-            next(e);
-        });
+        // user.save().then((user) => {
+        //     res.send(user);
+        // })
+        // .catch(e => {
+        //     next(e);
+        // });
     }
 
     static test1(req, res, next) {
