@@ -18,8 +18,8 @@ class UserRouter {
         
     }
     getRoutes(){
-            this.router.post("/signup",UserValidators.signup(),UserController.signup);
-            this.router.get('/test', UserController.signup,UserController.test1,UserController.test2);
+            this.router.post('/signup',UserValidators.signup(),UserController.signup);
+            // this.router.get('/test', UserController.signup,UserController.test1,UserController.test2);
     }
     postRoutes(){
     }

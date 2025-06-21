@@ -1,18 +1,17 @@
 import { body } from "express-validator";
 
-export class UserValidators{
-    static signup(){
-        return[
-                            body('name','Name is required').isString(),
-                            body('email','email is required').isEmail(),
-                            body('password','Password is required').isLength({min:5})
-                            .custom((value,{req}) => {
-                                if(req.body.email) return true;
-                                else{
-                                    throw new Error("Email is not available for validation");
-                                }
-                            }),
-                            
-                        ]
-    }
+export class UserValidators {
+  static signup() {
+    return [
+      body('name', 'Name is required').isString(),
+      body('phone', 'phone is required').isString(),
+      body('email', 'email is required').isEmail(),
+      body('password', 'Password is required')
+        .isAlphanumeric()
+        .isLength({ min: 8, max: 25 })
+        .withMessage('password must be 8-25 character'),
+      body('type', 'user role type is required').isString(),
+      body('status', 'user status  is required').isString()
+    ];
+  }
 }

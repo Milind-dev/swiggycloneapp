@@ -29,19 +29,22 @@ export class Server {
       .catch((err) => console.error("MongoDB connection error:", err));
   }
 
-  setRoutes() {
-    this.userRoutes();
-  }
-  
-  userRoutes() {
-    this.app.use("/app/user", UserRouter);
-  }
-  
- configBodyParser(){
+   configBodyParser(){
     this.app.use(bodyParser.urlencoded({
       extended:true
     }));
   }
+
+
+  userRoutes() {
+    this.app.use("/api/user", UserRouter);
+  }
+  
+    setRoutes() {
+    this.userRoutes();
+  }
+  
+
   error04Handler(){
     this.app.use((req,res) => {
       res.status(404).json({

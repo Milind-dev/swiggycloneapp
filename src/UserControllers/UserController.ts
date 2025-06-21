@@ -2,70 +2,45 @@ import { validationResult } from "express-validator";
 import User from "../models/User";
 
 export class UserController {
-    static signup(req, res, next)  {
-            // console.log(req.query.email);
-            // const data = { name: "techyks", email: "milinddev101@gmail.com" };
-            // res.status(200).send(data);
+  static signup(req, res, next) {
+    const errors = validationResult(req);
+    const name = req.body.name;
+    const email = req.body.email;
+    const password = req.body.password;
+    const phone = req.body.phone;
+    const type = req.body.type;
+    const status = req.body.status;
 
-            // (req as any).errorStatus = 422
-            // const error = new Error('User email or password doesnot match');
-            // next(error);
-     
-            // res.send(req.body);
-            // res.send(req.query)
-
-            const errors = validationResult(req);
-            const email = req.body.email;
-            const password = req.body.password;
-            const name = req.body.name;
-            if(!errors.isEmpty()){
-                // return res.status(400).json({errors:errors.array()});
-                return res.status(400).json({errors:errors.array().map(x => x.msg)});
-
-            }
-
-            //after validors use after its comment
-            // if(!email){
-            //     const error  = new Error('email is required');
-            //     next(error);
-            // }
-            // else if(!password){
-            //     const error = new Error('password is required');
-            //     next(error);
-            // }
-            // else if(!name){
-            //     const error = new Error('Name is required');
-            //     next(error);                
-            // }
-
-            // const user = new User({
-            //     email,
-            //     password,
-            //     name
-            // })
-
-            // user.save().then((user) => {
-            //     console.log("uesr", user)
-            //     res.send(user)
-            // }).catch(e => {
-            //     // const error = new Error(e);
-            //     next(e);
-
-            // })
-
-            
-
-
-
-        }
-    static test1(req, res, next) {
-            console.log("test");
-                (req as any).msg = 'This is a test1';
-                next(); 
+    if (!errors.isEmpty()) {
+      // return res.status(400).json({errors:errors.array().map(x => x.msg)});
+      return next(new Error(errors.array()[0].msg));
     }
 
-    static test2(req, res) {
-            // console.log("test");
-                res.send((req as any).msg);
-    }        
+    const data = {
+      email,
+      phone,
+      password,
+      name,
+      type,
+      status,
+    };
+
+    // const user = new User({
+    //     email,
+    //     password,
+    //     name
+    // })
+
+    let user = new User(data);
+    user
+      .save()
+      .then((user) => {
+        console.log("uesr", user);
+        res.send(user);
+      })
+      .catch((e) => {
+        // const error = new Error(e);
+        next(e);
+      });
+  }
 }
