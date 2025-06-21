@@ -8,23 +8,29 @@ export class UserController {
 
         const errors = validationResult(req);
         const name = req.body.name;
+        const phone = req.body.phone;
         const email = req.body.email;
         const password = req.body.password;
+        const type = req.body.type;
+        const status = req.body.status;
+        
         if (!errors.isEmpty()) {
-            return res.status(400).json({ errors: errors.array().map(x => x.msg) });
+            // return res.status(400).json({ errors: errors.array().map(x => x.msg) });
+            return next(new Error(errors.array()[0].msg))
         }
 
-        // const user = new User({
-        //     email,
-        //     password
-        // });
+        const data = {
+            email,password,
+            name,type,status,phone
+        }
+        const user = new User(data);
 
-        // user.save().then((user) => {
-        //     res.send(user);
-        // })
-        // .catch(e => {
-        //     next(e);
-        // });
+        user.save().then((user) => {
+            res.send(user);
+        })
+        .catch(e => {
+            next(e);
+        });
     }
 
     static test1(req, res, next) {
